@@ -113,7 +113,7 @@ dotlottie-player {
 
 
     dotlottie-player {
-        max-width: 400px; /* Adjust size for smaller screens */
+       /* Adjust size for smaller screens */
         width: 100%; /* Ensure it takes full width */
         height: auto; /* Maintain aspect ratio */
         
