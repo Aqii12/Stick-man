@@ -539,6 +539,7 @@ if ('ontouchstart' in window) {
       phase = "turning";
     }
   }
+
   
   
 //   ??????========

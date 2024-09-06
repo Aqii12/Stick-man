@@ -6,7 +6,9 @@ body {
   display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    /* background-color: #992525; */
+    /* position: relative; */
+    overflow: hidden;
 }
 
 body {
@@ -21,7 +23,23 @@ body {
   height: 100%;
   text-align: center;
 }
-
+canvas {
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* z-index: 1; Positioned behind the Lottie animation */
+}
+dotlottie-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+     /* Adjust max-width as needed */
+    height: auto;
+    z-index: 2; /* Positioned on top of the canvas */
+}
 #score {
   position: absolute;
   top: 30px;
@@ -64,6 +82,11 @@ body {
   transition: opacity 2s;
 }
 
+dotlottie-player {
+    width: 100%;
+    max-width: 600px; /* Max width for larger screens */
+    height: auto;}
+
 /* Media Query for devices with max-width 480px */
 @media (max-width: 480px) {
     #score {
@@ -87,5 +110,14 @@ body {
     .container {
       flex-direction: column;
     }
+
+
+    dotlottie-player {
+        max-width: 400px; /* Adjust size for smaller screens */
+        width: 100%; /* Ensure it takes full width */
+        height: auto; /* Maintain aspect ratio */
+        
+    }
+
   }
 
