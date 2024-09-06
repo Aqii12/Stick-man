@@ -5,7 +5,7 @@ Array.prototype.last = function () {
     return this[this.length - 1];
   };
   
-  // A sinus function that acceps degrees instead of radians
+  // A sinus function that accept degrees instead of radians
   Math.sinus = function (degree) {
     return Math.sin((degree / 180) * Math.PI);
   };
@@ -514,11 +514,6 @@ Array.prototype.last = function () {
   }
   
 
-//   if ('ontouchstart' in window) {
-//     window.addEventListener("touchstart", handleStart);
-//     window.addEventListener("touchend", handleEnd);
-//   }
-
 
 if ('ontouchstart' in window) {
     window.addEventListener("touchstart", handleStart);
@@ -540,7 +535,119 @@ if ('ontouchstart' in window) {
     }
   }
 
+//   ?==================
   
-  
-//   ??????========
 
+// Get the audio element
+const backgroundMusic = document.getElementById("background-music");
+
+// Flag to check if sound has been played
+let soundPlayed = false;
+
+// The main game loop
+function animate(timestamp) {
+  if (!lastTimestamp) {
+    lastTimestamp = timestamp;
+    window.requestAnimationFrame(animate);
+    return;
+  }
+
+  switch (phase) {
+    case "waiting":
+      return; // Stop the loop
+    case "stretching": {
+      sticks.last().length += (timestamp - lastTimestamp) / stretchingSpeed;
+      break;
+    }
+    case "turning": {
+      sticks.last().rotation += (timestamp - lastTimestamp) / turningSpeed;
+
+      if (sticks.last().rotation > 90) {
+        sticks.last().rotation = 90;
+
+        const [nextPlatform, perfectHit] = thePlatformTheStickHits();
+        if (nextPlatform) {
+          // Increase score
+          score += perfectHit ? 2 : 1;
+          scoreElement.innerText = score;
+
+          if (perfectHit) {
+            perfectElement.style.opacity = 1;
+            setTimeout(() => (perfectElement.style.opacity = 0), 1000);
+          }
+
+          generatePlatform();
+          generateTree();
+          generateTree();
+        }
+
+        phase = "walking";
+      }
+      break;
+    }
+    case "walking": {
+      heroX += (timestamp - lastTimestamp) / walkingSpeed;
+
+      const [nextPlatform] = thePlatformTheStickHits();
+      if (nextPlatform) {
+        // If hero will reach another platform then limit its position at its edge
+        const maxHeroX = nextPlatform.x + nextPlatform.w - heroDistanceFromEdge;
+        if (heroX > maxHeroX) {
+          heroX = maxHeroX;
+          phase = "transitioning";
+        }
+      } else {
+        // If hero won't reach another platform then limit its position at the end of the pole
+        const maxHeroX = sticks.last().x + sticks.last().length + heroWidth;
+        if (heroX > maxHeroX) {
+          heroX = maxHeroX;
+          phase = "falling";
+        }
+      }
+      break;
+    }
+    case "transitioning": {
+      sceneOffset += (timestamp - lastTimestamp) / transitioningSpeed;
+
+      const [nextPlatform] = thePlatformTheStickHits();
+      if (sceneOffset > nextPlatform.x + nextPlatform.w - paddingX) {
+        // Add the next step
+        sticks.push({
+          x: nextPlatform.x + nextPlatform.w,
+          length: 0,
+          rotation: 0
+        });
+        phase = "waiting";
+      }
+      break;
+    }
+    case "falling": {
+      if (sticks.last().rotation < 180)
+        sticks.last().rotation += (timestamp - lastTimestamp) / turningSpeed;
+
+      heroY += (timestamp - lastTimestamp) / fallingSpeed;
+      const maxHeroY =
+        platformHeight + 100 + (window.innerHeight - canvasHeight) / 2;
+      if (heroY > maxHeroY) {
+        restartButton.style.display = "block";
+        // Play the background music when the game is over, if not played already
+        if (!soundPlayed) {
+          backgroundMusic.play();
+          soundPlayed = true;
+          backgroundMusic.addEventListener('ended', () => {
+            soundPlayed = false; // Reset the flag when the sound has finished
+          });
+        }
+        return;
+      }
+      break;
+    }
+    default:
+      throw Error("Wrong phase");
+  }
+
+  draw();
+  window.requestAnimationFrame(animate);
+
+  lastTimestamp = timestamp;
+}

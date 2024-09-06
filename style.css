@@ -84,7 +84,7 @@ dotlottie-player {
 
 dotlottie-player {
     width: 100%;
-   /* Max width for larger screens */
+    /* Max width for larger screens */
     height: auto;}
 
 /* Media Query for devices with max-width 480px */
@@ -113,7 +113,7 @@ dotlottie-player {
 
 
     dotlottie-player {
-       /* Adjust size for smaller screens */
+        /* max-width: 400px; Adjust size for smaller screens */
         width: 100%; /* Ensure it takes full width */
         height: auto; /* Maintain aspect ratio */
         
