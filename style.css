@@ -61,7 +61,7 @@ dotlottie-player {
   transition: opacity 2s;
 }
 
-#restart {
+/* #restart {
   width: 120px;
   height: 120px;
   position: absolute;
@@ -74,6 +74,65 @@ dotlottie-player {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: none;
   cursor: pointer;
+
+  transform: translate(-50%, -50%);
+    text-decoration: none;
+    background: #262626;
+    transition: 0.5;
+} */
+
+#restart{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    text-transform: uppercase;
+    background: #262626;
+    width: 150px;
+    height: 60px;
+    line-height: 60px;
+    color: #FFF;
+    border-radius: 10px;
+    padding: 0px 10px;
+    letter-spacing: 5px;
+    text-align: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    transition: 0.5;
+    overflow: hidden;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+#restart:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    /*    background: #F00;*/
+    z-index: -1;
+    transition: 1s;
+    border-style: solid;
+    border-color: #F00;
+    border-width: 80px 100px;
+    transform: rotate(360deg);
+    transform-origin: top left
+}
+
+#restart:hover:before {
+    border-color: #00F;
+    transform: rotate(40deg)
+}
+
+a:hover {
+    color: #ff0;
+    transition: 0.5s;
+    transition-delay: 0.3s;
 }
 
 #perfect {
